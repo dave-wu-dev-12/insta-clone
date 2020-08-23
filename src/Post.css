@@ -1,0 +1,39 @@
+.post__container {
+}
+.post__userInfoContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  align-items: center;
+}
+
+.post__avatar {
+  margin-right: 1em;
+}
+
+.post__userPostInfo {
+  flex: 1;
+}
+
+.post__username {
+  margin-bottom: 0.2em;
+}
+
+.post__location {
+  font-size: 0.8rem;
+}
+
+.post__image {
+  width: 100%;
+  object-fit: contain;
+}
+
+.post__actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6em 1em;
+}
+
+.action__icon {
+  margin-right: 0.8em;
+}
