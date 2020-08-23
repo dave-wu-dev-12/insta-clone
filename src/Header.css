@@ -1,0 +1,28 @@
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgray;
+  padding: 1em;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
+}
+
+.header__image {
+  height: 110px;
+  object-fit: contain;
+}
+
+.logout__container {
+  display: flex;
+  align-items: center;
+}
+.logout__text {
+  margin-right: 1em;
+  color: gray;
+}
+
+.logout__image {
+}
