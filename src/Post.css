@@ -1,4 +1,10 @@
 .post__container {
+  max-width: 900px;
+  width: 98%;
+  margin: 0 auto;
+  border: 1px solid lightgray;
+  background-color: white;
+  margin-top: 1em;
 }
 .post__userInfoContainer {
   display: flex;
@@ -26,6 +32,8 @@
 .post__image {
   width: 100%;
   object-fit: contain;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 
 .post__actions {
@@ -36,4 +44,29 @@
 
 .action__icon {
   margin-right: 0.8em;
+  cursor: pointer;
+}
+
+.bookmark__icon,
+.menu__icon {
+  cursor: pointer;
+}
+
+.post__captionContainer {
+  display: flex;
+  align-items: center;
+}
+
+.post__userCaption {
+  margin-right: 0.5em;
+}
+
+.post__caption {
+  font-size: 0.8rem;
+  padding: 1em;
+}
+
+.post__username {
+  font-weight: bolder;
+  margin-right: 0.5em;
 }

@@ -4,5 +4,6 @@
 
 .App {
   background-color: #fafafa;
-  height: 100vh;
+  height: 100%;
+  padding-bottom: 1em;
 }
