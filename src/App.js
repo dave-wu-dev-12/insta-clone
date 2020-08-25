@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import database from "./firebase";
+import { database, auth } from "./firebase";
 import Header from "./Header";
 import Post from "./Post";
+import Modal from "@material-ui/core/Modal";
+import { Button } from "@material-ui/core";
+import Signup from "./Signup";
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     database
@@ -17,9 +26,96 @@ function App() {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      // user logged in
+      if (authUser) {
+        // this is for setting the user in the app after a page reload
+        setUser(authUser);
+        console.log("user logged in");
+      } else {
+        //user log out
+        setUser(null);
+        console.log("user logged out");
+      }
+    });
+    return () => {};
+  }, []);
+
+  const openModal = (type) => {
+    if (type == "login") {
+      setModalType("login");
+    } else {
+      setModalType("signup");
+    }
+    setModal(true);
+  };
+
+  const modalDismissed = () => {
+    // clear fields
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setModal(false);
+  };
+
+  const modalSubmit = (event) => {
+    event.preventDefault();
+    if (modalType == "signup") {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((resp) => {
+          alert("sign up successful - please login");
+          modalDismissed();
+          return;
+        })
+        .catch((e) => alert(e.message));
+    } else {
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then((resp) => {
+          alert("login successful - enjoy");
+          resp.user.updateProfile({
+            displayName: email,
+          });
+          setUser(resp.user);
+          modalDismissed();
+          return;
+        })
+        .catch((e) => alert(e.message));
+    }
+  };
+
+  const logoutApp = () => {
+    auth.signOut();
+  };
+
   return (
     <div className="App">
-      <Header />
+      <Header
+        username={user?.displayName ? user.displayName : ""}
+        openModal={openModal}
+        logoutApp={logoutApp}
+      />
+
+      <Modal
+        open={modal}
+        onClose={modalDismissed}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Signup
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          email={email}
+          setEmail={setEmail}
+          modalSubmit={modalSubmit}
+          modalType={modalType}
+        />
+      </Modal>
+
       {posts.map(({ id, post }) => (
         <Post
           key={id}

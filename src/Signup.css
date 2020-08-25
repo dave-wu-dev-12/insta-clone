@@ -1,0 +1,14 @@
+.signUp__image {
+  width: 150px;
+}
+
+.signup__password,
+.signup__username,
+.signup__email {
+  margin-bottom: 1em;
+  width: 75%;
+}
+
+.signup__text {
+  font-weight: bold;
+}
