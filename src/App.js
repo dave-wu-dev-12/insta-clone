@@ -6,6 +6,7 @@ import Post from "./Post";
 import Modal from "@material-ui/core/Modal";
 import { Button } from "@material-ui/core";
 import Signup from "./Signup";
+import ImageUpload from "./ImageUpload";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -19,6 +20,7 @@ function App() {
   useEffect(() => {
     database
       .collection("posts")
+      .orderBy("time", "desc")
       .onSnapshot((snapshot) =>
         setPosts(snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() })))
       );
@@ -65,24 +67,17 @@ function App() {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((resp) => {
-          alert("sign up successful - please login");
-          modalDismissed();
-          return;
+          return resp.user.updateProfile({
+            displayName: email,
+          });
         })
         .catch((e) => alert(e.message));
     } else {
       auth
         .signInWithEmailAndPassword(email, password)
-        .then((resp) => {
-          alert("login successful - enjoy");
-          resp.user.updateProfile({
-            displayName: email,
-          });
-          setUser(resp.user);
-          modalDismissed();
-          return;
-        })
         .catch((e) => alert(e.message));
+
+      setModal(false);
     }
   };
 
@@ -126,6 +121,8 @@ function App() {
           caption={post.caption}
         />
       ))}
+
+      {user?.displayName && <ImageUpload username={user.displayName} />}
     </div>
   );
 }
